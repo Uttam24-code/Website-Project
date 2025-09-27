@@ -16,33 +16,45 @@ overlay.addEventListener("click", () => {
 });
 
 // --------------------
-// Toggle SVG (like/save)
+// Toggle SVG (like/save) on Home page
 // --------------------
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".icon.like, .icon.save").forEach(icon => {
-    icon.addEventListener("click", () => {
-      icon.classList.toggle("active");
+  // Load saved items from sessionStorage
+  let savedImages = JSON.parse(sessionStorage.getItem("savedImages")) || [];
 
-      // Find image & uploader inside the same card
-      const card = icon.closest(".card");
-      const img = card.querySelector("img");
-      const uploader = card.querySelector(".uploader")?.innerText || "Unknown";
+  document.querySelectorAll(".card").forEach(card => {
+    const img = card.querySelector("img");
+    const uploader = card.querySelector(".uploader")?.innerText || "Unknown";
+    const saveIcon = card.querySelector(".icon.save");
+    const likeIcon = card.querySelector(".icon.like");
 
-      // Get current saved list from sessionStorage
-      let savedImages = JSON.parse(sessionStorage.getItem("savedImages")) || [];
+    // --- Restore "saved" state on page load ---
+    if (savedImages.some(item => item.url === img.src)) {
+      saveIcon.classList.add("active");
+    }
 
-      if (icon.classList.contains("active")) {
-        // Add this image if not already in list
-        if (!savedImages.some(item => item.url === img.src)) {
-          savedImages.push({ url: img.src, uploader });
-        }
+    // --- Save toggle ---
+    saveIcon.addEventListener("click", () => {
+      let items = JSON.parse(sessionStorage.getItem("savedImages")) || [];
+      const exists = items.find(item => item.url === img.src);
+
+      if (exists) {
+        // Remove if already saved
+        items = items.filter(item => item.url !== img.src);
+        saveIcon.classList.remove("active");
       } else {
-        // Remove from saved list
-        savedImages = savedImages.filter(item => item.url !== img.src);
+        // Add if not saved
+        items.push({ url: img.src, uploader });
+        saveIcon.classList.add("active");
       }
 
-      // Save back to sessionStorage
-      sessionStorage.setItem("savedImages", JSON.stringify(savedImages));
+      sessionStorage.setItem("savedImages", JSON.stringify(items));
+      savedImages = items;
+    });
+
+    // --- Like toggle (visual only, not persisted) ---
+    likeIcon.addEventListener("click", () => {
+      likeIcon.classList.toggle("active");
     });
   });
 });
