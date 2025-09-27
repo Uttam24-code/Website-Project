@@ -73,7 +73,9 @@
 .action-bar svg {
     width: 28px;
     height: 28px;
-    fill: #d6bf8b;
+    fill: none;           /* outline only by default */
+    stroke: currentColor; /* color follows .action-bar text color */
+    transition: stroke 0.2s, fill 0.2s;
 }
 
 .action-bar:hover {
@@ -83,7 +85,7 @@
 }
 
 .action-bar:hover svg {
-    fill: #720817;
+    fill: none;
 }
 
 /* Favorites Section */
