@@ -1,0 +1,34 @@
+a{
+    text-decoration: none;
+}
+
+.title{
+    color: #d6bf8b;
+    font-size: 2rem;
+    display: grid;
+    justify-content: center;
+}
+
+.settings li {
+  border-bottom: 2px solid rgba(214, 191, 139, 0.274);
+}
+
+.settings ul li {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.settings ul li a {
+    display: block;
+    color: #d6bf8b;
+    text-decoration: none;
+    font-size: 1.1rem;
+    width: 100;
+}
+
+.settings li a:hover {
+  background-color: rgba(214, 191, 139, 0.1);
+  color: #fff;
+}
